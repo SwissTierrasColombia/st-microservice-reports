@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ai.st.microservice.reports.business.ReportDownloadSupplyIndividualBusiness;
-import com.ai.st.microservice.reports.business.ReportDownloadSupplyTotalBusiness;
-import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyIndividualDto;
-import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyTotalDto;
+import com.ai.st.microservice.reports.business.ReportDownloadSupplyBusiness;
+import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyDto;
 import com.ai.st.microservice.reports.dto.MessageDto;
 import com.ai.st.microservice.reports.dto.ReportInformationDto;
 import com.ai.st.microservice.reports.exceptions.BusinessException;
@@ -34,18 +32,14 @@ public class ReportV1Controller {
 	private final Logger log = LoggerFactory.getLogger(ReportV1Controller.class);
 
 	@Autowired
-	private ReportDownloadSupplyIndividualBusiness reportDownloadSupplyIndividualBusiness;
+	private ReportDownloadSupplyBusiness reportDownloadSupplyTotalBusiness;
 
-	@Autowired
-	private ReportDownloadSupplyTotalBusiness reportDownloadSupplyTotalBusiness;
-
-	@RequestMapping(value = "/download-supplies-individual", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/download-supplies", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create Report")
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "Create report", response = ReportInformationDto.class),
 			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
 	@ResponseBody
-	public ResponseEntity<Object> createReportDownloadSuppliesIndividual(
-			@RequestBody RequestReportDownloadSupplyIndividualDto reportDto) {
+	public ResponseEntity<Object> createReportDownloadSupplies(@RequestBody RequestReportDownloadSupplyDto reportDto) {
 
 		HttpStatus httpStatus = null;
 		Object responseDto = null;
@@ -53,69 +47,62 @@ public class ReportV1Controller {
 		try {
 
 			if (reportDto.getNamespace() == null || reportDto.getNamespace().isEmpty()) {
-				throw new InputValidationException("El directorio donde se guardará el reporte es obligatorio");
+				throw new InputValidationException("El directorio donde se guardará el reporte es obligatorio.");
 			}
 
-			if (reportDto.getTitle() == null || reportDto.getTitle().isEmpty()) {
-				throw new InputValidationException("El titulo es obligatorio");
+			if (reportDto.getDeliveryId() == null || reportDto.getDeliveryId().isEmpty()) {
+				throw new InputValidationException("El ID de entrega es obligatorio.");
 			}
 
-			responseDto = reportDownloadSupplyIndividualBusiness.generateReport(reportDto);
-			httpStatus = HttpStatus.OK;
-
-		} catch (InputValidationException e) {
-			log.error("Error ReportV1Controller@createReportDownloadSuppliesIndividual#Validation ---> "
-					+ e.getMessage());
-			httpStatus = HttpStatus.BAD_REQUEST;
-			responseDto = new MessageDto(e.getMessage(), 1);
-		} catch (BusinessException e) {
-			log.error(
-					"Error ReportV1Controller@createReportDownloadSuppliesIndividual#Business ---> " + e.getMessage());
-			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
-			responseDto = new MessageDto(e.getMessage(), 2);
-		} catch (Exception e) {
-			log.error("Error ReportV1Controller@createReportDownloadSuppliesIndividual#General ---> " + e.getMessage());
-			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-			responseDto = new MessageDto(e.getMessage(), 3);
-		}
-
-		return new ResponseEntity<>(responseDto, httpStatus);
-	}
-
-	@RequestMapping(value = "/download-supplies-total", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	@ApiOperation(value = "Create Report")
-	@ApiResponses(value = { @ApiResponse(code = 200, message = "Create report", response = ReportInformationDto.class),
-			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
-	@ResponseBody
-	public ResponseEntity<Object> createReportDownloadSuppliesTotal(
-			@RequestBody RequestReportDownloadSupplyTotalDto reportDto) {
-
-		HttpStatus httpStatus = null;
-		Object responseDto = null;
-
-		try {
-
-			if (reportDto.getNamespace() == null || reportDto.getNamespace().isEmpty()) {
-				throw new InputValidationException("El directorio donde se guardará el reporte es obligatorio");
+			if (reportDto.getDateDelivery() == null || reportDto.getDateDelivery().isEmpty()) {
+				throw new InputValidationException("La fecha de entrega es obligatoria.");
 			}
 
-			if (reportDto.getTitle() == null || reportDto.getTitle().isEmpty()) {
-				throw new InputValidationException("El titulo es obligatorio");
+			if (reportDto.getManagerName() == null || reportDto.getManagerName().isEmpty()) {
+				throw new InputValidationException("El nombre del gestor es obligatorio.");
+			}
+
+			if (reportDto.getOperatorName() == null || reportDto.getOperatorName().isEmpty()) {
+				throw new InputValidationException("El nombre del operador es obligatorio.");
+			}
+
+			if (reportDto.getMunicipalityCode() == null || reportDto.getMunicipalityCode().isEmpty()) {
+				throw new InputValidationException("El código del municipio es obligatorio.");
+			}
+
+			if (reportDto.getMunicipalityName() == null || reportDto.getMunicipalityName().isEmpty()) {
+				throw new InputValidationException("El nombre del municipio es obligatorio.");
+			}
+
+			if (reportDto.getDepartmentName() == null || reportDto.getDepartmentName().isEmpty()) {
+				throw new InputValidationException("El nombre del departamento es obligatorio.");
+			}
+
+			if (reportDto.getObservations() == null || reportDto.getObservations().isEmpty()) {
+				throw new InputValidationException("Las observaciones son obligatorias.");
+			}
+
+			if (reportDto.getDateCreation() == null || reportDto.getDateCreation().isEmpty()) {
+				throw new InputValidationException("La fecha de creación es obligatoria.");
+			}
+
+			if (reportDto.getSupplies() == null || reportDto.getSupplies().size() == 0) {
+				throw new InputValidationException("Los insumos son requeridos.");
 			}
 
 			responseDto = reportDownloadSupplyTotalBusiness.generateReport(reportDto);
 			httpStatus = HttpStatus.OK;
 
 		} catch (InputValidationException e) {
-			log.error("Error ReportV1Controller@createReportDownloadSuppliesTotal#Validation ---> " + e.getMessage());
+			log.error("Error ReportV1Controller@createReportDownloadSupplies#Validation ---> " + e.getMessage());
 			httpStatus = HttpStatus.BAD_REQUEST;
 			responseDto = new MessageDto(e.getMessage(), 1);
 		} catch (BusinessException e) {
-			log.error("Error ReportV1Controller@createReportDownloadSuppliesTotal#Business ---> " + e.getMessage());
+			log.error("Error ReportV1Controller@createReportDownloadSupplies#Business ---> " + e.getMessage());
 			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
 			responseDto = new MessageDto(e.getMessage(), 2);
 		} catch (Exception e) {
-			log.error("Error ReportV1Controller@createReportDownloadSuppliesTotal#General ---> " + e.getMessage());
+			log.error("Error ReportV1Controller@createReportDownloadSupplies#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new MessageDto(e.getMessage(), 3);
 		}

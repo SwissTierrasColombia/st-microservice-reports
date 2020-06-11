@@ -8,21 +8,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
-import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyTotalDto;
+import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyDto;
 import com.ai.st.microservice.reports.dto.ReportInformationDto;
 import com.ai.st.microservice.reports.exceptions.BusinessException;
 
 @Service
-public class ReportDownloadSupplyTotalBusiness extends ReportBusiness {
+public class ReportDownloadSupplyBusiness extends ReportBusiness {
 
-	Logger log = LogManager.getLogger(ReportDownloadSupplyTotalBusiness.class);
+	Logger log = LogManager.getLogger(ReportDownloadSupplyBusiness.class);
 
-	public ReportInformationDto generateReport(RequestReportDownloadSupplyTotalDto deliveryDto)
+	public ReportInformationDto generateReport(RequestReportDownloadSupplyDto deliveryDto)
 			throws BusinessException {
 
 		final Map<String, Object> parameters = new HashMap<>();
 
 		parameters.put("delivery", deliveryDto);
+		parameters.put("logo_main", getClass().getResourceAsStream("/jasper/images/st-logo-main.png"));
+		parameters.put("logo_second", getClass().getResourceAsStream("/jasper/images/st-logo-second.png"));
+		parameters.put("logo_agencia", getClass().getResourceAsStream("/jasper/images/st-logo-agencia.png"));
 
 		String filename = (deliveryDto.getFilename() != null && !deliveryDto.getFilename().isEmpty())
 				? deliveryDto.getFilename()
@@ -33,7 +36,7 @@ public class ReportDownloadSupplyTotalBusiness extends ReportBusiness {
 					parameters, deliveryDto.getNamespace(), filename);
 			return new ReportInformationDto(pathFile, true);
 		} catch (Exception e) {
-			log.error("Error creando reporte pdf: " + e.getMessage());
+			log.error("Error creando reporte pdf total: " + e.getMessage());
 			throw new BusinessException("Error creando el reporte");
 		}
 
