@@ -83,9 +83,9 @@
 			<staticText>
 				<reportElement x="50" y="30" width="460" height="30" uuid="6c42398d-e8b2-4c38-aca7-ca8c381a7fce"/>
 				<textElement textAlignment="Center">
-					<font size="24"/>
+					<font size="20"/>
 				</textElement>
-				<text><![CDATA[Reporte de entrega de insumos]]></text>
+				<text><![CDATA[Reporte de entrega de información para la gestión catastral]]></text>
 			</staticText>
 		</band>
 	</title>
@@ -122,16 +122,7 @@
 					</textElement>
 					<textFieldExpression><![CDATA["Gestor: " + $P{delivery}.getManagerName()]]></textFieldExpression>
 				</textField>
-				<textField>
-					<reportElement x="9" y="25" width="350" height="15" uuid="f248b6fd-de6b-426b-a398-2e397720ee75">
-						<property name="com.jaspersoft.studio.unit.height" value="px"/>
-						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-					</reportElement>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font size="11"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Autoridad Catastral"]]></textFieldExpression>
-				</textField>
+				
 				<textField>
 					<reportElement x="9" y="43" width="350" height="15" uuid="1f1c92a5-899d-4d66-a412-39ed6e21b583">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
@@ -177,7 +168,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font fontName="DejaVu Sans" size="12" isBold="true"/>
 					</textElement>
-					<text><![CDATA[Reporte entrega de insumos]]></text>
+					<text><![CDATA[Entrega por parte de la Autoridad Catastral]]></text>
 				</staticText>
 				
 				<textField>
@@ -235,7 +226,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="11" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Proveedor]]></text>
+								<text><![CDATA[Entregado por]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table 1_TD" height="30">
