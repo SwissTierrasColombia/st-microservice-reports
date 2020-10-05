@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ai.st.microservice.reports.business.ReportDeliveryAUBusiness;
 import com.ai.st.microservice.reports.business.ReportDownloadSupplyBusiness;
 import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyDto;
 import com.ai.st.microservice.reports.dto.MessageDto;
 import com.ai.st.microservice.reports.dto.ReportInformationDto;
+import com.ai.st.microservice.reports.dto.RequestReportDeliveryACDto;
 import com.ai.st.microservice.reports.exceptions.BusinessException;
 import com.ai.st.microservice.reports.exceptions.InputValidationException;
 
@@ -33,6 +35,9 @@ public class ReportV1Controller {
 
 	@Autowired
 	private ReportDownloadSupplyBusiness reportDownloadSupplyTotalBusiness;
+	
+	@Autowired
+	private ReportDeliveryAUBusiness reportDeliveryAUBusiness;
 
 	@RequestMapping(value = "/download-supplies", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create Report")
@@ -103,6 +108,62 @@ public class ReportV1Controller {
 			responseDto = new MessageDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error ReportV1Controller@createReportDownloadSupplies#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new MessageDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+	
+	@RequestMapping(value = "/delivery-au", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Create Report")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Create report", response = ReportInformationDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> createReportDeliveryAU(@RequestBody RequestReportDeliveryACDto reportDto) {
+
+		HttpStatus httpStatus = null;
+		Object responseDto = null;
+
+		try {
+
+			if (reportDto.getNamespace() == null || reportDto.getNamespace().isEmpty()) {
+				throw new InputValidationException("El directorio donde se guardará el reporte es obligatorio.");
+			}
+
+			if (reportDto.getManagerName() == null || reportDto.getManagerName().isEmpty()) {
+				throw new InputValidationException("El nombre del gestor es obligatorio.");
+			}
+
+			if (reportDto.getMunicipalityCode() == null || reportDto.getMunicipalityCode().isEmpty()) {
+				throw new InputValidationException("El código del municipio es obligatorio.");
+			}
+
+			if (reportDto.getMunicipalityName() == null || reportDto.getMunicipalityName().isEmpty()) {
+				throw new InputValidationException("El nombre del municipio es obligatorio.");
+			}
+
+			if (reportDto.getDepartmentName() == null || reportDto.getDepartmentName().isEmpty()) {
+				throw new InputValidationException("El nombre del departamento es obligatorio.");
+			}
+
+			if (reportDto.getSupplies() == null || reportDto.getSupplies().size() == 0) {
+				throw new InputValidationException("Los insumos son requeridos.");
+			}
+
+			responseDto = reportDeliveryAUBusiness.generateReport(reportDto);
+			httpStatus = HttpStatus.OK;
+
+		} catch (InputValidationException e) {
+			log.error("Error ReportV1Controller@createReportDeliveryAU#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new MessageDto(e.getMessage(), 1);
+		} catch (BusinessException e) {
+			log.error("Error ReportV1Controller@createReportDeliveryAU#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new MessageDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ReportV1Controller@createReportDeliveryAU#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new MessageDto(e.getMessage(), 3);
 		}
