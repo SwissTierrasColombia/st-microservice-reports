@@ -85,7 +85,7 @@
 				<textElement textAlignment="Center">
 					<font size="20"/>
 				</textElement>
-				<text><![CDATA[Reporte de entrega de información para la gestión catastral]]></text>
+				<text><![CDATA[Reporte de entrega información GC]]></text>
 			</staticText>
 		</band>
 	</title>
