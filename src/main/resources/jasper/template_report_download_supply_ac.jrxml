@@ -109,13 +109,6 @@
 					</textElement>
 					<text><![CDATA[Entrega por parte de la Autoridad Catastral]]></text>
 				</staticText>
-				<textField>
-					<reportElement x="271" y="64" width="238" height="30" uuid="275faed1-4cc1-47c7-95d0-46eeb60b7eb2"/>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="DejaVu Sans"/>
-					</textElement>
-					<textFieldExpression><![CDATA["Fecha de entrega: " + $P{delivery}.getCreatedAt()]]></textFieldExpression>
-				</textField>
 				<image>
 					<reportElement x="21" y="10" width="229" height="75" uuid="b78772cf-415f-4037-a4e7-4018e4f7c053"/>
 					<imageExpression><![CDATA[$P{logo_main}]]></imageExpression>
@@ -253,7 +246,7 @@
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="11" isBold="true"/>
 								</textElement>
-								<text><![CDATA[Tipo]]></text>
+								<text><![CDATA[Tipo Entrega]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:detailCell style="Table 1_TD" height="30">
