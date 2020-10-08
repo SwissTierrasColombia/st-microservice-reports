@@ -13,7 +13,7 @@
 	
 	<groupId>com.ai.st.microservice.reports</groupId>
 	<artifactId>st-microservice-reports</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>st-microservice-reports</name>
 	<description>Microservice Reports</description>
 
