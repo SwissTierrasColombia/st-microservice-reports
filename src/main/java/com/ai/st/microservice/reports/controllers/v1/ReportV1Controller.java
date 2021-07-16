@@ -1,25 +1,18 @@
 package com.ai.st.microservice.reports.controllers.v1;
 
+import com.ai.st.microservice.reports.business.ReportSuppliesSNR;
+import com.ai.st.microservice.reports.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ai.st.microservice.reports.business.ReportDeliveryAUBusiness;
 import com.ai.st.microservice.reports.business.ReportDeliveryManagerBusiness;
 import com.ai.st.microservice.reports.business.ReportDownloadSupplyBusiness;
-import com.ai.st.microservice.reports.dto.RequestReportDownloadSupplyDto;
-import com.ai.st.microservice.reports.dto.MessageDto;
-import com.ai.st.microservice.reports.dto.ReportInformationDto;
-import com.ai.st.microservice.reports.dto.RequestReportDeliveryACDto;
-import com.ai.st.microservice.reports.dto.RequestReportDeliveryManagerDto;
 import com.ai.st.microservice.reports.exceptions.BusinessException;
 import com.ai.st.microservice.reports.exceptions.InputValidationException;
 
@@ -43,6 +36,9 @@ public class ReportV1Controller {
 
 	@Autowired
 	private ReportDeliveryManagerBusiness deliveryManagerBusiness;
+
+	@Autowired
+	private ReportSuppliesSNR suppliesSNR;
 
 	@RequestMapping(value = "/download-supplies", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Create Report")
@@ -245,6 +241,46 @@ public class ReportV1Controller {
 			responseDto = new MessageDto(e.getMessage(), 2);
 		} catch (Exception e) {
 			log.error("Error ReportV1Controller@createReportDeliveryManager#General ---> " + e.getMessage());
+			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+			responseDto = new MessageDto(e.getMessage(), 3);
+		}
+
+		return new ResponseEntity<>(responseDto, httpStatus);
+	}
+
+	@PostMapping(value = "/supplies-snr", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Create Report")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Create report", response = ReportInformationDto.class),
+			@ApiResponse(code = 500, message = "Error Server", response = String.class) })
+	@ResponseBody
+	public ResponseEntity<Object> createReportSuppliesSNR(@RequestBody RequestReportSNRSuppliesDto reportDto) {
+
+		HttpStatus httpStatus;
+		Object responseDto;
+
+		try {
+
+			if (reportDto.getNamespace() == null || reportDto.getNamespace().isEmpty()) {
+				throw new InputValidationException("El directorio donde se guardará el reporte es obligatorio.");
+			}
+
+			if (reportDto.getRequests() == null || reportDto.getRequests().size() == 0) {
+				throw new InputValidationException("Las solicitudes son requeridas.");
+			}
+
+			responseDto = suppliesSNR.generateReport(reportDto);
+			httpStatus = HttpStatus.OK;
+
+		} catch (InputValidationException e) {
+			log.error("Error ReportV1Controller@createReportDeliveryAU#Validation ---> " + e.getMessage());
+			httpStatus = HttpStatus.BAD_REQUEST;
+			responseDto = new MessageDto(e.getMessage(), 1);
+		} catch (BusinessException e) {
+			log.error("Error ReportV1Controller@createReportDeliveryAU#Business ---> " + e.getMessage());
+			httpStatus = HttpStatus.UNPROCESSABLE_ENTITY;
+			responseDto = new MessageDto(e.getMessage(), 2);
+		} catch (Exception e) {
+			log.error("Error ReportV1Controller@createReportDeliveryAU#General ---> " + e.getMessage());
 			httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 			responseDto = new MessageDto(e.getMessage(), 3);
 		}

@@ -27,7 +27,7 @@ public class RequestReportDeliveryACDto extends ReportRequestDto implements Seri
 	@ApiModelProperty(required = true, notes = "Department Name")
 	private String departmentName;
 	
-	@ApiModelProperty(required = false, notes = "Created At")
+	@ApiModelProperty(notes = "Created At")
 	private String createdAt;
 
 	public RequestReportDeliveryACDto() {
