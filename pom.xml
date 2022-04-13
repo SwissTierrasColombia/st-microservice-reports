@@ -13,7 +13,7 @@
 	
 	<groupId>com.ai.st.microservice.reports</groupId>
 	<artifactId>st-microservice-reports</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<name>st-microservice-reports</name>
 	<description>Microservice Reports</description>
 
@@ -107,6 +107,14 @@
 			<groupId>com.newrelic.agent.java</groupId>
 			<artifactId>newrelic-api</artifactId>
 			<version>7.5.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.agent.java</groupId>
+			<artifactId>newrelic-agent</artifactId>
+			<version>7.5.0</version>
+			<scope>provided</scope>
 		</dependency>
 
 	</dependencies>
