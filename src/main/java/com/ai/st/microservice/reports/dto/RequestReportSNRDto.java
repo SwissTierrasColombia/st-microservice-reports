@@ -76,4 +76,11 @@ public final class RequestReportSNRDto implements Serializable {
     public void setRequestNumber(String requestNumber) {
         this.requestNumber = requestNumber;
     }
+
+    @Override
+    public String toString() {
+        return "RequestReportSNRDto{" + "department='" + department + '\'' + ", municipality='" + municipality + '\''
+                + ", manager='" + manager + '\'' + ", deliveryDate='" + deliveryDate + '\'' + ", orderNumber='"
+                + orderNumber + '\'' + ", requestNumber='" + requestNumber + '\'' + '}';
+    }
 }

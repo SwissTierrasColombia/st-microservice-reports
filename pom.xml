@@ -13,7 +13,7 @@
 	
 	<groupId>com.ai.st.microservice.reports</groupId>
 	<artifactId>st-microservice-reports</artifactId>
-	<version>1.1.0</version>
+	<version>1.2.0</version>
 	<name>st-microservice-reports</name>
 	<description>Microservice Reports</description>
 
@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<version>6.6.0</version>
+			<version>6.19.0</version>
 		</dependency>
 
 		<dependency>
@@ -91,6 +91,32 @@
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.ai.st.microservice.common</groupId>
+			<artifactId>st-common</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.logging</groupId>
+			<artifactId>logback</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.agent.java</groupId>
+			<artifactId>newrelic-api</artifactId>
+			<version>7.5.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.newrelic.agent.java</groupId>
+			<artifactId>newrelic-agent</artifactId>
+			<version>7.5.0</version>
+			<scope>provided</scope>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -111,6 +137,22 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+				<groupId>net.revelc.code.formatter</groupId>
+				<artifactId>formatter-maven-plugin</artifactId>
+				<version>2.18.0</version>
+				<configuration>
+					<lineEnding>LF</lineEnding>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>format</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 
@@ -119,6 +161,11 @@
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
 			<url>https://repo.spring.io/milestone</url>
+		</repository>
+		<repository>
+			<id>jaspersoft</id>
+			<name>jaspersoft</name>
+			<url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url>
 		</repository>
 	</repositories>
 

@@ -10,76 +10,82 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "RequestReportDownloadACDto")
 public class RequestReportDeliveryACDto extends ReportRequestDto implements Serializable {
 
-	private static final long serialVersionUID = -112754967726891284L;
+    private static final long serialVersionUID = -112754967726891284L;
 
-	@ApiModelProperty(required = true, notes = "Supplies")
-	private List<SupplyACDto> supplies;
+    @ApiModelProperty(required = true, notes = "Supplies")
+    private List<SupplyACDto> supplies;
 
-	@ApiModelProperty(required = true, notes = "Manager name")
-	private String managerName;
+    @ApiModelProperty(required = true, notes = "Manager name")
+    private String managerName;
 
-	@ApiModelProperty(required = true, notes = "Municipality Code")
-	private String municipalityCode;
+    @ApiModelProperty(required = true, notes = "Municipality Code")
+    private String municipalityCode;
 
-	@ApiModelProperty(required = true, notes = "Municipality Name")
-	private String municipalityName;
+    @ApiModelProperty(required = true, notes = "Municipality Name")
+    private String municipalityName;
 
-	@ApiModelProperty(required = true, notes = "Department Name")
-	private String departmentName;
-	
-	@ApiModelProperty(notes = "Created At")
-	private String createdAt;
+    @ApiModelProperty(required = true, notes = "Department Name")
+    private String departmentName;
 
-	public RequestReportDeliveryACDto() {
-		this.supplies = new ArrayList<SupplyACDto>();
-	}
+    @ApiModelProperty(notes = "Created At")
+    private String createdAt;
 
-	public List<SupplyACDto> getSupplies() {
-		return supplies;
-	}
+    public RequestReportDeliveryACDto() {
+        this.supplies = new ArrayList<SupplyACDto>();
+    }
 
-	public void setSupplies(List<SupplyACDto> supplies) {
-		this.supplies = supplies;
-	}
+    public List<SupplyACDto> getSupplies() {
+        return supplies;
+    }
 
-	public String getManagerName() {
-		return managerName;
-	}
+    public void setSupplies(List<SupplyACDto> supplies) {
+        this.supplies = supplies;
+    }
 
-	public void setManagerName(String managerName) {
-		this.managerName = managerName;
-	}
+    public String getManagerName() {
+        return managerName;
+    }
 
-	public String getMunicipalityCode() {
-		return municipalityCode;
-	}
+    public void setManagerName(String managerName) {
+        this.managerName = managerName;
+    }
 
-	public void setMunicipalityCode(String municipalityCode) {
-		this.municipalityCode = municipalityCode;
-	}
+    public String getMunicipalityCode() {
+        return municipalityCode;
+    }
 
-	public String getMunicipalityName() {
-		return municipalityName;
-	}
+    public void setMunicipalityCode(String municipalityCode) {
+        this.municipalityCode = municipalityCode;
+    }
 
-	public void setMunicipalityName(String municipalityName) {
-		this.municipalityName = municipalityName;
-	}
+    public String getMunicipalityName() {
+        return municipalityName;
+    }
 
-	public String getDepartmentName() {
-		return departmentName;
-	}
+    public void setMunicipalityName(String municipalityName) {
+        this.municipalityName = municipalityName;
+    }
 
-	public void setDepartmentName(String departmentName) {
-		this.departmentName = departmentName;
-	}
+    public String getDepartmentName() {
+        return departmentName;
+    }
 
-	public String getCreatedAt() {
-		return createdAt;
-	}
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
+    }
 
-	public void setCreatedAt(String createdAt) {
-		this.createdAt = createdAt;
-	}
+    public String getCreatedAt() {
+        return createdAt;
+    }
 
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestReportDeliveryACDto{" + "supplies=" + supplies + ", managerName='" + managerName + '\''
+                + ", municipalityCode='" + municipalityCode + '\'' + ", municipalityName='" + municipalityName + '\''
+                + ", departmentName='" + departmentName + '\'' + ", createdAt='" + createdAt + '\'' + '}';
+    }
 }

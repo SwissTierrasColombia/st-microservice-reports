@@ -33,4 +33,9 @@ public final class RequestReportSNRSuppliesDto extends ReportRequestDto implemen
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
     }
+
+    @Override
+    public String toString() {
+        return "RequestReportSNRSuppliesDto{" + "requests=" + requests + ", createdAt='" + createdAt + '\'' + '}';
+    }
 }
